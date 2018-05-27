@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-// import Moment from 'react-moment';
-// import 'moment-timezone';
+import Moment from 'react-moment';
+import 'moment-timezone';
 import Clock from 'react-live-clock';
 
 import companiesJson from './providedData/Companies.json'
 import guestsJson from './providedData/Guests.json'
 import templateJson from './providedData/MessageTemplate.json'
 
-import CompanySelect from './components/CompanySelect.jsx'
-import GuestSelect from './components/GuestSelect.jsx'
+
 import Checklist from './components/Checklist.jsx'
+import InputModal from './components/InputModal.jsx'
 
 
 import './App.css';
@@ -46,6 +46,7 @@ class App extends Component {
   }
 
   componentDidMount () {
+    this.selectSalutation(); 
     this.populateMessage(); 
   }
 
@@ -75,6 +76,13 @@ class App extends Component {
     this.setState({
       messageOutput: newMessage
     })
+  }
+
+  selectSalutation = () => {
+    let currentTime = new Date().getTime(); 
+    console.log(currentTime);
+    
+    
   }
 
   render() {
@@ -121,6 +129,8 @@ class App extends Component {
                     tag2="example"
                     space=" - "
                     />
+
+          <InputModal />
 
 
 
