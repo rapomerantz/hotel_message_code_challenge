@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -8,7 +9,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 
 import '../App.css'
-
 
 class Checklist extends React.Component {
   state = {
@@ -21,11 +21,10 @@ class Checklist extends React.Component {
       checked: [element],
     });
     this.props.handleChange(element, checkListName); 
-
   };
 
   render() {
-    
+
     return (
       <div className="checkListContainer">
 
@@ -51,9 +50,6 @@ class Checklist extends React.Component {
           </ListItem>
         ))}
     </List>
-
-
-
 
       </div>
     );
