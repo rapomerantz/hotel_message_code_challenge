@@ -47,7 +47,7 @@ class App extends Component {
     this.populateMessage({id: this.state.templateId});     
   }
 
-//call populateMessage() whenever this.state is changed
+//call populateMessage() whenever this.state.company/guest/templateId is changed
   componentDidUpdate (prevProps, prevState) {
     if (prevState.company !== this.state.company || prevState.guest !== this.state.guest || prevState.templateId !== this.state.templateId) {
       this.populateMessage()
@@ -179,7 +179,7 @@ class App extends Component {
                       />
 
           <Checklist jsonInput={this.state.template}
-                      handleChange={this.handleChangeTemplate} //<-- using a different handle change function for the message template 
+                      handleChange={this.handleChangeTemplate} //<-- using a different handle change function for the message template (this could be refactored) 
                       name="template"
                       tag1="id"
                       tag2="title"
@@ -192,8 +192,7 @@ class App extends Component {
           </Card>
 
           <Button onClick={this.handleDonuts} 
-                  className="donutButton"
-                  >
+                  className="donutButton">
                   {buttonText}
           </Button>
         </div>

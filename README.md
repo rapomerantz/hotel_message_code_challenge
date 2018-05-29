@@ -27,4 +27,5 @@ Personal testing and demoing the project for a friend allowed me to verify the a
 - Edit and delete templates.
 - Integrate with a server/database so data persists page refresh. 
 - Refactor the populateMessage() function - I think there must be a more elegant solution than a series of .replace() methods but that but was what I ended up using.
+- Refactor the selectSalutation() function - It should easily be able to accept all possible timezones, not just the three provided here. 
 - Additional styling, specifically mobile devices. I also think the 'Add New Message' button should (at least appear to be) part of the template checklist component. 
