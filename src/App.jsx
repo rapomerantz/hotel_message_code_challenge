@@ -155,7 +155,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className={donutClass}>
-          <h1 className="App-title">Welcome to Kipsu Messaging</h1>
+          <h1 className="App-title">Welcome to usipK Messaging!</h1>
           <p>
             Your current time <Clock format={'HH:mm:ss a'} ticking={true} />
             <br/>
