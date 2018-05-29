@@ -10,6 +10,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 export default class FormDialog extends React.Component {
   state = {
     open: false,
+    newMessage: '', 
+    title: ''
   };
 
   handleClickOpen = () => {
@@ -20,6 +22,21 @@ export default class FormDialog extends React.Component {
     this.setState({ open: false });
   };
 
+  handleNewMessage = (event) => {
+      this.setState({
+          [event.target.id]: event.target.value
+      })
+  }
+
+  handleSubmit = () => {
+      this.props.handleSubmit(this.state.newMessage, this.state.title)
+      this.setState({
+        newMessage: '',
+        title: ''
+      })
+      this.handleClose();    
+  }
+
   render() {
     return (
       <div>
@@ -29,27 +46,38 @@ export default class FormDialog extends React.Component {
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+          <DialogTitle id="form-dialog-title">Want to enter a new message? Simply type it below, replacing key terms in the following format: </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              To subscribe to this website, please enter your email address here. We will send
-              updates occasionally.
+                Welcome to sunny <strong>hotelCity, guestFirstName</strong>!
+                we hope you're enjoying your stay in <strong>guestRoomNumber</strong>.
+                Give us a call if you need anything! 
             </DialogContentText>
             <TextField
               autoFocus
               margin="dense"
-              id="name"
-              label="Email Address"
-              type="email"
+              id="title"
+              label="Title"
+              type="text"
               fullWidth
+              onChange={this.handleNewMessage}
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="newMessage"
+              label="New Message"
+              type="text"
+              fullWidth
+              onChange={this.handleNewMessage}
             />
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleClose} color="primary">
-              Subscribe
+            <Button onClick={this.handleSubmit} color="primary">
+              Add
             </Button>
           </DialogActions>
         </Dialog>

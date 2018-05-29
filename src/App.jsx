@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Moment from 'react-moment';
 import 'moment-timezone';
 import Clock from 'react-live-clock';
+import Card from '@material-ui/core/Card';
+
 
 import companiesJson from './providedData/Companies.json'
 import guestsJson from './providedData/Guests.json'
@@ -19,51 +21,66 @@ class App extends Component {
     super(props) 
 
     this.state = {
-        company:   {
-          "id": null,
-          "company": "____",
-          "city": "____",
-          "timezone": "US/Central"
-        },
-        guest:  {
-          "id": null,
-          "firstName": "___",
-          "lastName": "____",
-          "reservation": {
-            "roomNumber": "____",
-            "startTimestamp": "______",
-            "endTimestamp": "____"
-          }
-        }, 
-        template: {
-          "id": 1,
-          "title": "Welcome",
-          "example": "Good morning Ethan, and welcome to Hotel California! Room 304 is now ready you. Enjoy your stay, and let us know if you need anything.",
-          "format": "salutation guestFirstName, and welcome to hotelName! Room guestRoomNumber is now ready for you. Enjoy your stay, and let us know if you need anything"
+      company:   {
+        "id": null,
+        "company": "____",
+        "city": "____",
+        "timezone": "US/Central"
       },
+      guest:  {
+        "id": null,
+        "firstName": "___",
+        "lastName": "____",
+        "reservation": {
+          "roomNumber": "____",
+          "startTimestamp": "______",
+          "endTimestamp": "____"
+        }
+      }, 
+      template: templateJson,
+      templateId: 1, 
       messageOutput: '',  
     }
   }
 
   componentDidMount () {
     this.selectSalutation(); 
-    this.populateMessage(); 
+    this.populateTemplateState(); 
+    console.log(this.state.template);
+    this.populateMessage({id: this.state.templateId});     
   }
 
+  populateTemplateState = () => {
+    this.setState({
+      template: templateJson
+    })
+  }
+
+  handleChangeTemplate = (element, name) => {
+    let id = element.id - 1 //<-- array is zero indexed, ids start at 1
+    console.log('handleChangeTemplate', id, name);
+    this.setState({
+      templateId: id
+    })
+    this.populateMessage()
+  }
+
+
   handleChange = (element, name) => {
-    console.log('in handleChange', element);
+    console.log(element.id, name);
     this.setState({
       ...this.state,
       [name]: element
     })
-    this.populateMessage(); 
+    this.populateMessage(element, name); 
   }
 
-
-  populateMessage = () => {
-    // let messageTemplate = this.state.template.format; 
-    let messageTemplate = "salutation Mr. guestLastName, and welcome to beautiful hotelCity! At hotelName we take great pride in our facilities - please let us know if you need anything!"; 
-    let newMessage = messageTemplate.replace('guestFirstName', this.state.guest.firstName)
+  //I can imagine there's a more elegent way to do this but 
+  //I went this route because it more easily let me make a user-friend UI
+  //(as opposed to having dropdowns to select the variables)
+  populateMessage = (element, name) => {
+    let newMessage = this.state.template[this.state.templateId].template
+    newMessage = newMessage.replace('guestFirstName', this.state.guest.firstName)
     newMessage = newMessage.replace('guestLastName', this.state.guest.lastName)
     newMessage = newMessage.replace('guestRoomNumber', this.state.guest.reservation.roomNumber)
     newMessage = newMessage.replace('guestCheckIn', this.state.guest.reservation.startTimeStamp)
@@ -71,8 +88,7 @@ class App extends Component {
     newMessage = newMessage.replace('hotelName', this.state.company.company)
     newMessage = newMessage.replace('hotelCity', this.state.company.city)
     newMessage = newMessage.replace('hotelTimezone', this.state.company.timezone)
-    newMessage = newMessage.replace('salutation', 'HELOOOOOOO')
-    console.log(newMessage);
+    newMessage = newMessage.replace('salutation', 'Good morning')
     this.setState({
       messageOutput: newMessage
     })
@@ -81,12 +97,26 @@ class App extends Component {
   selectSalutation = () => {
     let currentTime = new Date().getTime(); 
     console.log(currentTime);
-    
-    
   }
 
-  render() {
 
+
+
+  handleSubmit = (newMessage, newTitle) => {
+    console.log('in handleNewMessage App, new Message:', newMessage);    
+    let newMessagePackage = {
+      id: this.state.template.length + 1,
+      title: newTitle, 
+      // example: newMessage, 
+      template: newMessage
+    }
+    this.setState({
+      template: [...this.state.template, newMessagePackage]
+    })
+  }
+
+
+  render() {
 
 
 
@@ -94,16 +124,17 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">Welcome to Kipsu Messaging</h1>
-          <h3>Connecting Hotels to Their Guests, Everyday</h3>
           <p>
             Your current time <Clock format={'HH:mm:ss a'} ticking={true} />
+            <br/>
+            <br/>
+            Selected Company's current time: <Clock format={'HH:mm:ss a'} ticking={true} timezone={this.state.company.timezone} />
           </p> 
           <p>
-            Selected Company's current time: <Clock format={'HH:mm:ss a'} ticking={true} timezone={this.state.company.timezone} />
           </p> 
         </header>
 
-        {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
+        <pre>{JSON.stringify(this.state, null, 2)}</pre>
 
           <Checklist jsonInput={companiesJson}
                       handleChange={this.handleChange}
@@ -122,28 +153,24 @@ class App extends Component {
                     space=" "
                     />
 
-        <Checklist jsonInput={templateJson}
-                    handleChange={this.handleChange}
+        <Checklist jsonInput={this.state.template}
+                    handleChange={this.handleChangeTemplate} //<-- using a different handle change function for the message template 
                     name="template"
-                    tag1="title"
-                    tag2="example"
+                    tag1="id"
+                    tag2="title"
                     space=" - "
                     />
 
-          <InputModal />
+          <InputModal handleSubmit={this.handleSubmit}/>
 
-
-
-
-        <div>
+        <Card id="messageOutput"> 
           <h2>Message:</h2>
+          <p>{this.state.messageOutput}</p>
 
-            <p>{this.state.messageOutput}</p>
-
-
-        </div>
-
+        </Card>
+        {/* <img src="/assets/donuts.jpeg" alt=""/> */}
       </div>
+
     );
   }
 }
