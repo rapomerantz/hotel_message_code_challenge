@@ -26,18 +26,25 @@ export default class FormDialog extends React.Component {
   };
 
   handleNewMessage = (event) => {
+
       this.setState({
           [event.target.id]: event.target.value
       })
+    
   }
 
   handleSubmit = () => {
+    if (this.state.newMessage.length > 0 && this.state.title.length > 0) {
       this.props.handleSubmit(this.state.newMessage, this.state.title)
       this.setState({
         newMessage: '',
         title: ''
       })
-      this.handleClose();    
+      this.handleClose();
+    }
+    else {
+      alert('Make sure you fill out both text fields to add a new template')
+    }
   }
 
   render() {
@@ -47,20 +54,30 @@ export default class FormDialog extends React.Component {
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
-          aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Want to enter a new message? Simply type it below, replacing key terms in the following format: </DialogTitle>
+          <DialogTitle id="addTemplate">Want to enter a new message? Simply type it below, replacing key terms in the following format: </DialogTitle>
           <DialogContent>
             <DialogContentText>
-                Welcome to sunny <strong>hotelCity, guestFirstName</strong>!
+                <strong>salutation</strong> to sunny <strong>hotelCity, guestFirstName</strong>!
                 we hope you're enjoying your stay in <strong>guestRoomNumber</strong>.
                 Give us a call if you need anything! 
+                <br/>
+                <p>Variable Options:</p>
+                <ul>
+                  <li>guestFirstName</li>
+                  <li>guestLastName</li>
+                  <li>guestRoomNumber</li>
+                  <li>hotelName</li>
+                  <li>hotelCity</li>
+                  <li>hotelTimezone</li>
+                  <li>salutation</li>
+                </ul>
             </DialogContentText>
             <TextField
               autoFocus
               margin="dense"
               id="title"
-              label="Title"
+              label="Template Title"
               type="text"
               fullWidth
               onChange={this.handleNewMessage}
@@ -78,7 +95,7 @@ export default class FormDialog extends React.Component {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleSubmit} color="primary">
+            <Button onClick={this.handleSubmit} color="primary" autoFocus>
               Add
             </Button>
           </DialogActions>

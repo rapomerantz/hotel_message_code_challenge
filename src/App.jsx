@@ -47,6 +47,7 @@ class App extends Component {
     this.populateMessage({id: this.state.templateId});     
   }
 
+//call populateMessage() whenever this.state is changed
   componentDidUpdate (prevProps, prevState) {
     if (prevState.company !== this.state.company || prevState.guest !== this.state.guest || prevState.templateId !== this.state.templateId) {
       this.populateMessage()
@@ -68,7 +69,6 @@ class App extends Component {
   }
 
   handleChange = (element, name) => {
-    console.log(element, name);    
     this.setState({
       [name]: element
     })
@@ -81,13 +81,9 @@ class App extends Component {
   populateMessage = () => {
     this.selectSalutation(); 
     let newMessage = this.state.template[this.state.templateId].template
-    console.log('outputINput', newMessage);
-    
     newMessage = newMessage.replace('guestFirstName', this.state.guest.firstName)
     newMessage = newMessage.replace('guestLastName', this.state.guest.lastName)
     newMessage = newMessage.replace('guestRoomNumber', this.state.guest.reservation.roomNumber)
-    newMessage = newMessage.replace('guestCheckIn', this.state.guest.reservation.startTimeStamp)
-    newMessage = newMessage.replace('guestCheckOut', this.state.guest.reservation.endTimeStamp)
     newMessage = newMessage.replace('hotelName', this.state.company.company)
     newMessage = newMessage.replace('hotelCity', this.state.company.city)
     newMessage = newMessage.replace('hotelTimezone', this.state.company.timezone)
@@ -149,10 +145,7 @@ class App extends Component {
       donutClass += ' donuts'
       buttonText = 'That\'s a little much...'
       backgroundClass = 'blue'
-    }
-
-    let messageOutput = this.state.messageOutput; 
-    
+    }    
 
     return (
       <div className="App">
@@ -169,9 +162,6 @@ class App extends Component {
 
         </header>
         <div className={backgroundClass}>
-            
-          {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
-
             <Checklist jsonInput={companiesJson}
                         handleChange={this.handleChange}
                         name="company"
@@ -207,11 +197,8 @@ class App extends Component {
                   {buttonText}
           </Button>
         </div>
-
       </div>
-
     );
   }
 }
-
 export default App;

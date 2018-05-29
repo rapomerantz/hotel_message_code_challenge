@@ -21,16 +21,13 @@ class Checklist extends React.Component {
   };
 
   render() {
-
     return (
       <div className="checkListContainer">
-
         <List>
         {this.props.jsonInput.map(element => (
           <ListItem
             key={element.id}
             button
-            dense
             onClick={this.handleToggle(element)}
             value={element.id}
             disableRipple
@@ -43,11 +40,9 @@ class Checklist extends React.Component {
             {/* Dynamically setting list item text based on tag props passed down from parent */}
             {/* Different contents require different spacing - passed down from parent as well */}
             <ListItemText primary={element[this.props.tag1] + this.props.space + element[this.props.tag2]} /> 
-            
           </ListItem>
         ))}
     </List>
-
       </div>
     );
   }
