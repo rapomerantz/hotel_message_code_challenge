@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
-import Moment from 'react-moment';
-import 'moment-timezone';
 import Clock from 'react-live-clock';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
-
 
 import companiesJson from './providedData/Companies.json'
 import guestsJson from './providedData/Guests.json'
 import templateJson from './providedData/MessageTemplate.json'
 
-
 import Checklist from './components/Checklist.jsx'
 import InputModal from './components/InputModal.jsx'
-
 
 import './App.css';
 
@@ -52,6 +47,13 @@ class App extends Component {
     this.populateMessage({id: this.state.templateId});     
   }
 
+  componentDidUpdate (prevProps, prevState) {
+    if (prevState.company !== this.state.company || prevState.guest !== this.state.guest || prevState.templateId !== this.state.templateId) {
+      this.populateMessage()
+    }
+  }
+
+
   populateTemplateState = () => {
     this.setState({
       template: templateJson
@@ -63,15 +65,13 @@ class App extends Component {
     this.setState({
       templateId: id
     })
-    this.populateMessage()
   }
 
   handleChange = (element, name) => {
+    console.log(element, name);    
     this.setState({
-      ...this.state,
       [name]: element
     })
-    this.populateMessage(); 
   }
 
   //I imagine there's a more elegent way to do this but 
@@ -81,6 +81,8 @@ class App extends Component {
   populateMessage = () => {
     this.selectSalutation(); 
     let newMessage = this.state.template[this.state.templateId].template
+    console.log('outputINput', newMessage);
+    
     newMessage = newMessage.replace('guestFirstName', this.state.guest.firstName)
     newMessage = newMessage.replace('guestLastName', this.state.guest.lastName)
     newMessage = newMessage.replace('guestRoomNumber', this.state.guest.reservation.roomNumber)
@@ -93,6 +95,8 @@ class App extends Component {
     this.setState({
       messageOutput: newMessage
     })
+    console.log(this.state);
+    
   }
 
   selectSalutation = () => {
@@ -105,6 +109,7 @@ class App extends Component {
     } else if (timezone === 'US/Eastern'){
       timezone = 'America/New_York'
     }
+    
     let now = new Date().toLocaleString('en-US', {hour: '2-digit', hour12: false, timeZone: timezone}); 
   
     if (now >= 0 && now <= 11) {
@@ -127,7 +132,6 @@ class App extends Component {
     let newMessagePackage = {
       id: this.state.template.length + 1,
       title: newTitle, 
-      // example: newMessage, 
       template: newMessage
     }
     this.setState({
@@ -151,6 +155,10 @@ class App extends Component {
       buttonText = 'What a terrible shade of blue'
       backgroundClass = 'blue'
     }
+
+    let messageOutput = this.state.messageOutput; 
+    console.log('messageOutput',messageOutput);
+    
 
     return (
       <div className="App">
@@ -196,7 +204,7 @@ class App extends Component {
 
           <Card id="messageOutput"> 
             <h2>Message:</h2>
-            <p>{this.state.messageOutput}</p>
+            <p>{messageOutput}</p>
           </Card>
 
           <Button onClick={this.handleDonuts} 
