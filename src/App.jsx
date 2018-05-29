@@ -75,8 +75,8 @@ class App extends Component {
   }
 
   //I imagine there's a more elegent way to do this but 
-  //I went this route because it more easily let me make a user-friend UI
-  //(other options would be a series of dropdowns, drag and drop variables into a 
+  //I went this route because it let me make a reasonably user-friend UI
+  //(other options would be a series of text fields & dropdowns, drag and drop variables into a 
   //text field, or something like Material UI autofill)
   populateMessage = () => {
     this.selectSalutation(); 
@@ -143,19 +143,18 @@ class App extends Component {
 
 
   render() {
-
-    let bodyClass = '';
-    let buttonText = 'Donuts!'
+    let donutClass = 'App-header';
+    let buttonText = ''
+    let backgroundClass = ''
     if (this.state.donuts) {
-      bodyClass = 'donuts'
-      buttonText = 'No Donuts!'
+      donutClass += ' donuts'
+      buttonText = 'What a terrible shade of blue'
+      backgroundClass = 'blue'
     }
-
-
 
     return (
       <div className="App">
-        <header className="App-header">
+        <header className={donutClass}>
           <h1 className="App-title">Welcome to Kipsu Messaging</h1>
           <p>
             Your current time <Clock format={'HH:mm:ss a'} ticking={true} />
@@ -167,7 +166,7 @@ class App extends Component {
           <InputModal handleSubmit={this.handleSubmit}/>
 
         </header>
-        <div className = {bodyClass}>
+        <div className={backgroundClass}>
             
           {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
 
@@ -195,14 +194,12 @@ class App extends Component {
                       space=" - "
                       />
 
-
           <Card id="messageOutput"> 
             <h2>Message:</h2>
             <p>{this.state.messageOutput}</p>
           </Card>
 
           <Button onClick={this.handleDonuts} 
-                  // variant="raised"
                   className="donutButton"
                   >
                   {buttonText}

@@ -52,11 +52,16 @@ body {
 
 .donuts{
   background-image: url('/assets/donuts.jpeg'); 
-  background-size: 100px 100px;
+  background-size: 200px 200px;
+  color: black; 
+}
+
+.blue {
+  background-color: aqua; 
 }
 
 .donutButton{
-
+  width: 200px; 
 }
 
 .addButton {
