@@ -2,7 +2,16 @@
     {
         "id": 1,
         "title": "Welcome",
-        "example": "Good morning Ethan, and welcome to Hotel California! Room 304 is now ready you. Enjoy your stay, and let us know if you need anything.",
-        "format": "salutation guestFirstName, and welcome to hotelName! Room guestRoomNumber is now ready for you. Enjoy your stay, and let us know if you need anything"
+        "template": "salutation guestFirstName, and welcome to hotelName! Room guestRoomNumber is now ready for you. Enjoy your stay, and let us know if you need anything"
+    },
+    {
+        "id": 2,
+        "title": "Thank you",
+        "template": "guestFirstName, Thanks so much for spending your weekend with us at hotelName, we truly apprciate your business. See you next time!"
+    },
+    {
+        "id": 3,
+        "title": "Everything okay?",
+        "template": "Hi guestFirstName, sorry to bother you but a few guests have complained of 'funny noises and smells' coming from room guestRoomNumer...is everything okay up there?"
     }
 ]

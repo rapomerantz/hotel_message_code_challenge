@@ -4,33 +4,67 @@ body {
   font-family: helvetica;
 }
 
+#messageOutput{
+  width: 60%;
+  margin-left: 20%; 
+  padding: 2em;
+  font-size: 1.3em; 
+}
+
 
 .checkListContainer{
   border: 1px solid lightgrey; 
-  width: 30%; 
+  width: 33%; 
   float: left;
-  height: 20em;  
+  height: 25em;  
   overflow: scroll; 
+  /* background-color: white;  */
 }
 
 
 .App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
+  background-color: rgb(39, 60, 85);
+  height: 120px;
+  padding: 40px;
   color: white;
-  text-align: center; 
+
+}
+
+.App-header p {
+  float: left;  
+  text-align: left; 
+  font-size: 1.3em;
 }
 
 .App-title {
-  font-size: 1.5em;
+  /* font-size: 1.5em; */
+  /* float: left;  */
+  text-align: left; 
+  margin: 0px 0px 0px 0px; 
+  padding: 0 0 0 0; 
+
 }
 
 .App-intro {
   font-size: large;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+
+.donuts{
+  background-image: url('/assets/donuts.jpeg'); 
+  background-size: 200px 200px;
+  color: black; 
+}
+
+.blue {
+  background-color: aqua; 
+}
+
+.donutButton{
+  width: 200px; 
+}
+
+.addButton {
+  float: right; 
+  margin: 3em 6em !important; 
 }
