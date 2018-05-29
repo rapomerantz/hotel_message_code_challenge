@@ -33,7 +33,7 @@ class Checklist extends React.Component {
             disableRipple
           >
             <Checkbox
-                checked={this.state.checked.indexOf(element) !== -1}
+                checked={this.state.checked.indexOf(element) !== -1} 
                 tabIndex={-1}
                 disableRipple
             />
