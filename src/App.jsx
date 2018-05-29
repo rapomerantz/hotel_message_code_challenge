@@ -94,9 +94,7 @@ class App extends Component {
     newMessage = newMessage.replace('salutation', this.state.salutation)
     this.setState({
       messageOutput: newMessage
-    })
-    console.log(this.state);
-    
+    })    
   }
 
   selectSalutation = () => {
@@ -109,9 +107,7 @@ class App extends Component {
     } else if (timezone === 'US/Eastern'){
       timezone = 'America/New_York'
     }
-    
     let now = new Date().toLocaleString('en-US', {hour: '2-digit', hour12: false, timeZone: timezone}); 
-  
     if (now >= 0 && now <= 11) {
       this.setState({
         salutation: 'Good Morning'
@@ -128,7 +124,6 @@ class App extends Component {
   }
 
   handleSubmit = (newMessage, newTitle) => {
-    console.log('in handleNewMessage App, new Message:', newMessage);    
     let newMessagePackage = {
       id: this.state.template.length + 1,
       title: newTitle, 
@@ -152,18 +147,17 @@ class App extends Component {
     let backgroundClass = ''
     if (this.state.donuts) {
       donutClass += ' donuts'
-      buttonText = 'What a terrible shade of blue'
+      buttonText = 'That\'s a little much...'
       backgroundClass = 'blue'
     }
 
     let messageOutput = this.state.messageOutput; 
-    console.log('messageOutput',messageOutput);
     
 
     return (
       <div className="App">
         <header className={donutClass}>
-          <h1 className="App-title">Welcome to usipK Messaging!</h1>
+          <h1 className="App-title">Welcome to uspiK Messaging!</h1>
           <p>
             Your current time <Clock format={'HH:mm:ss a'} ticking={true} />
             <br/>
@@ -204,7 +198,7 @@ class App extends Component {
 
           <Card id="messageOutput"> 
             <h2>Message:</h2>
-            <p>{messageOutput}</p>
+            <p>{this.state.messageOutput}</p>
           </Card>
 
           <Button onClick={this.handleDonuts} 

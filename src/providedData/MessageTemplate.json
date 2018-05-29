@@ -2,7 +2,7 @@
     {
         "id": 1,
         "title": "Welcome",
-        "template": "salutation guestFirstName, and welcome to hotelName! Room guestRoomNumber is now ready for you. Enjoy your stay, and let us know if you need anything"
+        "template": "salutation guestFirstName, and welcome to hotelName! Room guestRoomNumber is now ready for you. Enjoy your stay, and let us know if you need anything!"
     },
     {
         "id": 2,
@@ -12,6 +12,6 @@
     {
         "id": 3,
         "title": "Everything okay?",
-        "template": "Hi guestFirstName, sorry to bother you but a few guests have complained of 'funny noises and smells' coming from room guestRoomNumer...is everything okay up there?"
+        "template": "Hi guestFirstName, sorry to bother you but a few guests have complained of 'funny noises and smells' coming from room guestRoomNumber...is everything okay up there?"
     }
 ]
