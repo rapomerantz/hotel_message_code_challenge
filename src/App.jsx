@@ -106,15 +106,15 @@ class App extends Component {
     let now = new Date().toLocaleString('en-US', {hour: '2-digit', hour12: false, timeZone: timezone}); 
     if (now >= 0 && now <= 11) {
       this.setState({
-        salutation: 'Good Morning'
+        salutation: 'Good morning'
       })
     } else if (now > 11 && now <= 17) {
       this.setState({
-        salutation: 'Good Afternoon'
+        salutation: 'Good afternoon'
       })
     } else if (now > 17 && now <= 24) {
       this.setState({
-        salutation: 'Good Evening'
+        salutation: 'Good evening'
       })
     }
   }
