@@ -1,7 +1,7 @@
 #Hotel Messaging App
 ##Hand-crafted by Atticus Pomerantz
 
-<img src="/assets/uspiK_screen.png" width="500" />
+<img src="./public/assets/uspiK_screen.png" width="500" />
 
 ##To Run: 
 - Clone/download repository
