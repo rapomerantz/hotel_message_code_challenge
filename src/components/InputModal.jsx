@@ -7,6 +7,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import '../App.css';
+
+
 export default class FormDialog extends React.Component {
   state = {
     open: false,
@@ -40,7 +43,7 @@ export default class FormDialog extends React.Component {
   render() {
     return (
       <div>
-        <Button variant="raised"  onClick={this.handleClickOpen}>Add New Message</Button>
+        <Button className="addButton" variant="raised"  onClick={this.handleClickOpen}>Add New Message</Button>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
@@ -63,7 +66,6 @@ export default class FormDialog extends React.Component {
               onChange={this.handleNewMessage}
             />
             <TextField
-              autoFocus
               margin="dense"
               id="newMessage"
               label="New Message"

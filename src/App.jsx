@@ -3,6 +3,7 @@ import Moment from 'react-moment';
 import 'moment-timezone';
 import Clock from 'react-live-clock';
 import Card from '@material-ui/core/Card';
+import Button from '@material-ui/core/Button';
 
 
 import companiesJson from './providedData/Companies.json'
@@ -37,16 +38,17 @@ class App extends Component {
           "endTimestamp": "____"
         }
       }, 
+      salutation: 'Good Morning!',
       template: templateJson,
       templateId: 1, 
       messageOutput: '',  
+      donuts: false
     }
   }
 
   componentDidMount () {
     this.selectSalutation(); 
     this.populateTemplateState(); 
-    console.log(this.state.template);
     this.populateMessage({id: this.state.templateId});     
   }
 
@@ -58,27 +60,26 @@ class App extends Component {
 
   handleChangeTemplate = (element, name) => {
     let id = element.id - 1 //<-- array is zero indexed, ids start at 1
-    console.log('handleChangeTemplate', id, name);
     this.setState({
       templateId: id
     })
     this.populateMessage()
   }
 
-
   handleChange = (element, name) => {
-    console.log(element.id, name);
     this.setState({
       ...this.state,
       [name]: element
     })
-    this.populateMessage(element, name); 
+    this.populateMessage(); 
   }
 
-  //I can imagine there's a more elegent way to do this but 
+  //I imagine there's a more elegent way to do this but 
   //I went this route because it more easily let me make a user-friend UI
-  //(as opposed to having dropdowns to select the variables)
-  populateMessage = (element, name) => {
+  //(other options would be a series of dropdowns, drag and drop variables into a 
+  //text field, or something like Material UI autofill)
+  populateMessage = () => {
+    this.selectSalutation(); 
     let newMessage = this.state.template[this.state.templateId].template
     newMessage = newMessage.replace('guestFirstName', this.state.guest.firstName)
     newMessage = newMessage.replace('guestLastName', this.state.guest.lastName)
@@ -88,19 +89,38 @@ class App extends Component {
     newMessage = newMessage.replace('hotelName', this.state.company.company)
     newMessage = newMessage.replace('hotelCity', this.state.company.city)
     newMessage = newMessage.replace('hotelTimezone', this.state.company.timezone)
-    newMessage = newMessage.replace('salutation', 'Good morning')
+    newMessage = newMessage.replace('salutation', this.state.salutation)
     this.setState({
       messageOutput: newMessage
     })
   }
 
   selectSalutation = () => {
-    let currentTime = new Date().getTime(); 
-    console.log(currentTime);
+    let timezone = this.state.company.timezone
+//Switching given JSON values to something my .toLocalSting likes better
+    if (timezone === 'US/Central') {
+      timezone = 'America/Chicago'
+    } else if (timezone === 'US/Pacific'){
+      timezone = 'America/Los_Angeles'
+    } else if (timezone === 'US/Eastern'){
+      timezone = 'America/New_York'
+    }
+    let now = new Date().toLocaleString('en-US', {hour: '2-digit', hour12: false, timeZone: timezone}); 
+  
+    if (now >= 0 && now <= 11) {
+      this.setState({
+        salutation: 'Good Morning'
+      })
+    } else if (now > 11 && now <= 17) {
+      this.setState({
+        salutation: 'Good Afternoon'
+      })
+    } else if (now > 17 && now <= 24) {
+      this.setState({
+        salutation: 'Good Evening'
+      })
+    }
   }
-
-
-
 
   handleSubmit = (newMessage, newTitle) => {
     console.log('in handleNewMessage App, new Message:', newMessage);    
@@ -115,8 +135,21 @@ class App extends Component {
     })
   }
 
+  handleDonuts = () => {
+    this.setState({
+      donuts: !this.state.donuts
+    })
+  }
+
 
   render() {
+
+    let bodyClass = '';
+    let buttonText = 'Donuts!'
+    if (this.state.donuts) {
+      bodyClass = 'donuts'
+      buttonText = 'No Donuts!'
+    }
 
 
 
@@ -130,45 +163,52 @@ class App extends Component {
             <br/>
             Selected Company's current time: <Clock format={'HH:mm:ss a'} ticking={true} timezone={this.state.company.timezone} />
           </p> 
-          <p>
-          </p> 
+
+          <InputModal handleSubmit={this.handleSubmit}/>
+
         </header>
+        <div className = {bodyClass}>
+            
+          {/* <pre>{JSON.stringify(this.state, null, 2)}</pre> */}
 
-        <pre>{JSON.stringify(this.state, null, 2)}</pre>
+            <Checklist jsonInput={companiesJson}
+                        handleChange={this.handleChange}
+                        name="company"
+                        tag1="company"
+                        tag2="city"
+                        space=" - "
+                        />
 
-          <Checklist jsonInput={companiesJson}
+          <Checklist jsonInput={guestsJson}
                       handleChange={this.handleChange}
-                      name="company"
-                      tag1="company"
-                      tag2="city"
+                      name="guest"
+                      tag1="firstName"
+                      tag2="lastName"
+                      space=" "
+                      />
+
+          <Checklist jsonInput={this.state.template}
+                      handleChange={this.handleChangeTemplate} //<-- using a different handle change function for the message template 
+                      name="template"
+                      tag1="id"
+                      tag2="title"
                       space=" - "
                       />
 
 
-        <Checklist jsonInput={guestsJson}
-                    handleChange={this.handleChange}
-                    name="guest"
-                    tag1="firstName"
-                    tag2="lastName"
-                    space=" "
-                    />
+          <Card id="messageOutput"> 
+            <h2>Message:</h2>
+            <p>{this.state.messageOutput}</p>
+          </Card>
 
-        <Checklist jsonInput={this.state.template}
-                    handleChange={this.handleChangeTemplate} //<-- using a different handle change function for the message template 
-                    name="template"
-                    tag1="id"
-                    tag2="title"
-                    space=" - "
-                    />
+          <Button onClick={this.handleDonuts} 
+                  // variant="raised"
+                  className="donutButton"
+                  >
+                  {buttonText}
+          </Button>
+        </div>
 
-          <InputModal handleSubmit={this.handleSubmit}/>
-
-        <Card id="messageOutput"> 
-          <h2>Message:</h2>
-          <p>{this.state.messageOutput}</p>
-
-        </Card>
-        {/* <img src="/assets/donuts.jpeg" alt=""/> */}
       </div>
 
     );
